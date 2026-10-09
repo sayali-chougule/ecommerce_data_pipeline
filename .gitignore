@@ -1,6 +1,6 @@
 cat > .gitignore <<'EOF'
 .venv/
-.env
+.project1/
 __pycache__/
 .pytest_cache/
 *.py[cod]
@@ -8,4 +8,5 @@ logs/*
 data/raw/*
 data/processed/*
 .DS_Store
+.env.example
 EOF
