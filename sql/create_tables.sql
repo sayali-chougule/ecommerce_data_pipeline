@@ -7,19 +7,19 @@
 
 DROP TABLE IF EXISTS bronze.customers;
 
-CREATE TABLE IF NOT EXISTS bronze.customers(
+CREATE TABLE bronze.customers(
     customer_id                 TEXT,
     customer_unique_id          TEXT,
     customer_zip_code_prefix    TEXT,
     customer_city               TEXT,
-    customer_state              TEXT,
+    customer_state              TEXT
 );
 
 -- 2. Orders
 
 DROP TABLE IF EXISTS bronze.orders;
 
-CREATE TABLE IF NOT EXISTS bronze.orders(
+CREATE TABLE bronze.orders(
     order_id                         TEXT,
     customer_id                      TEXT,
     order_status                     TEXT,
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS bronze.orders(
 
 DROP TABLE IF EXISTS bronze.order_items;
 
-CREATE TABLE IF NOT EXISTS bronze.order_items(
+CREATE TABLE bronze.order_items(
 order_id                TEXT,
 order_item_id           TEXT,
 product_id              TEXT,
@@ -48,7 +48,7 @@ freight_value          TEXT
 
 DROP TABLE IF EXISTS bronze.products;
 
-CREATE TABLE IF NOT EXISTS bronze.products(
+CREATE TABLE bronze.products(
     product_id                     TEXT,
     product_category_name          TEXT,
     product_name_lenght            TEXT,
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS bronze.products(
 
 DROP TABLE IF EXISTS bronze.sellers;
 
-CREATE TABLE IF NOT EXISTS bronze.sellers(
+CREATE TABLE bronze.sellers(
     seller_id                 TEXT,
     seller_zip_code_prefix    TEXT,
     seller_city               TEXT,
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS bronze.sellers(
 
 DROP TABLE IF EXISTS bronze.payments;
 
-CREATE TABLE IF NOT EXISTS bronze.payments( 
+CREATE TABLE bronze.payments( 
     order_id                 TEXT,
     payment_sequential       TEXT,
     payment_type             TEXT,
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS bronze.payments(
 
 DROP TABLE IF EXISTS bronze.reviews;
 
-CREATE TABLE IF NOT EXISTS bronze.reviews(
+CREATE TABLE bronze.reviews(
     review_id                  TEXT,
     order_id                   TEXT,
     review_score               TEXT,
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS bronze.reviews(
 
 DROP TABLE IF EXISTS bronze.geolocation;
 
-CREATE TABLE IF NOT EXISTS bronze.geolocation(
+CREATE TABLE bronze.geolocation(
     geolocation_zip_code_prefix      TEXT,
     geolocation_lat                  TEXT,
     geolocation_lng                  TEXT,
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS bronze.geolocation(
 DROP TABLE IF EXISTS bronze.product_category_translation;
 
 
-CREATE TABLE IF NOT EXISTS(
+CREATE TABLE bronze.product_category_translation(
     product_category_name            TEXT,
     product_category_name_english    TEXT
 );
