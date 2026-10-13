@@ -1,6 +1,6 @@
 cat > .gitignore <<'EOF'
 .venv/
-.project1/
+.project1/*
 __pycache__/
 .pytest_cache/
 *.py[cod]
