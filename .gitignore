@@ -9,5 +9,5 @@ data/raw/*
 data/processed/*
 data/extracted/*
 .DS_Store
-.env.example
+.env
 EOF
