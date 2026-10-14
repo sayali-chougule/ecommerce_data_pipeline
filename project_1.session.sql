@@ -67,3 +67,9 @@ SELECT
 FROM bronze.reviews
 GROUP BY review_score
 ORDER BY review_score;
+
+SELECT
+    status,
+    COUNT(*) AS total_runs
+FROM etl.data_quality_runs
+GROUP BY status;

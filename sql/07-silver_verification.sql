@@ -73,3 +73,35 @@ SELECT table_name
 FROM information_schema.tables
 WHERE table_schema = 'silver'
 ORDER BY table_name;
+
+-- Verify review score distribution
+SELECT
+    review_score,
+    COUNT(*) AS review_count
+FROM silver.reviews
+GROUP BY review_score
+ORDER BY review_score;
+
+-- Investigate repeated ZIP-code prefixes
+SELECT
+    geolocation_zip_code_prefix,
+    COUNT(*) AS observations
+FROM silver.geolocation
+GROUP BY geolocation_zip_code_prefix
+ORDER BY observations DESC
+LIMIT 10;
+
+-- Check product category translations
+SELECT
+    p.product_category_name,
+    t.product_category_name_english
+FROM silver.products p
+LEFT JOIN silver.product_category_translation t
+    ON p.product_category_name = t.product_category_name
+LIMIT 20;
+
+-- Verify all nine Silver tables
+SELECT COUNT(*) AS silver_table_count
+FROM information_schema.tables
+WHERE table_schema = 'silver'
+  AND table_type = 'BASE TABLE';
