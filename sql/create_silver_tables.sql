@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS silver.customers (
     transformed_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- Records
+-- Orders
 CREATE TABLE IF NOT EXISTS silver.orders (
     order_id TEXT PRIMARY KEY,
     customer_id TEXT NOT NULL,
@@ -55,3 +55,44 @@ CREATE TABLE IF NOT EXISTS silver.products(
 );
 
 -- 4. Sellers
+CREATE TABLE IF NOT EXISTS silver.sellers(
+    seller_id TEXT PRIMARY KEY,
+    seller_zip_code_prefix TEXT,
+    seller_city TEXT,
+    seller_state TEXT,
+    source_batch_id UUID,
+    transformed_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 5. Order Items
+CREATE TABLE IF NOT EXISTS silver.order_items( 
+    order_id TEXT,
+    order_item_id INT,
+    product_id TEXT,
+    seller_id TEXT,
+    shipping_limit_date TIMESTAMP,
+    price NUMERIC(12,2),
+    freight_value NUMERIC(12,2),
+    source_batch_id UUID,
+    transformed_at TIMESTAMPTZ DEFAULT NOW(),
+
+    PRIMARY KEY (order_id, order_item_id),
+
+    CONSTRAINT order_id_fk
+        FOREIGN KEY (order_id)
+        REFERENCES silver.orders(order_id),
+
+    CONSTRAINT product_id_fk
+        FOREIGN KEY (product_id)
+        REFERENCES silver.products(product_id),
+
+    CONSTRAINT seller_id_fk
+        FOREIGN KEY (seller_id)
+        REFERENCES silver.sellers(seller_id),
+
+    CONSTRAINT chk_item_price
+        CHECK (price >= 0),
+
+    CONSTRAINT chk_freight_value
+        CHECK (freight_value >= 0)
+);

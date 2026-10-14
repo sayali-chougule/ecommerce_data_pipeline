@@ -46,3 +46,10 @@ FROM information_schema.columns
 WHERE table_schema = 'bronze'
   AND table_name = 'products'
 ORDER BY ordinal_position; 
+
+
+SELECT * FROM bronze.sellers;
+
+SELECT * FROM bronze.order_items;
+
+SELECT * FROM bronze.payments;
