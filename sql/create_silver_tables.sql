@@ -26,19 +26,5 @@ CREATE TABLE IF NOT EXISTS silver.orders (
 
     CONSTRAINT fk_orders_customer
         FOREIGN KEY (customer_id)
-        REFERENCES silver.customers(customer_id),
-
-    CONSTRAINT chk_order_status
-        CHECK (
-            order_status IN (
-                'created',
-                'approved',
-                'invoiced',
-                'processing',
-                'shipped',
-                'delivered',
-                'unavailable',
-                'canceled'
-            )
-        )
+        REFERENCES silver.customers(customer_id)
 );
