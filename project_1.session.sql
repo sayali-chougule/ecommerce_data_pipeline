@@ -53,3 +53,6 @@ SELECT * FROM bronze.sellers;
 SELECT * FROM bronze.order_items;
 
 SELECT * FROM bronze.payments;
+
+SELECT DISTINCT payment_type
+FROM bronze.payments;
