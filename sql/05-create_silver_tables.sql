@@ -1,5 +1,3 @@
-CREATE SCHEMA IF NOT EXISTS silver;
-
 -- 1. Customer
 CREATE TABLE IF NOT EXISTS silver.customers (
     customer_id TEXT PRIMARY KEY,
