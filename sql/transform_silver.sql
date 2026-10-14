@@ -9,7 +9,7 @@ BEGIN;
 
 -- All related tables are refreshed together.
 TRUNCATE TABLE
-    silver.order_payments,
+    silver.payments,
     silver.order_items,
     silver.sellers,
     silver.products,
@@ -64,7 +64,7 @@ INSERT INTO silver.products (
     product_category_name,
     product_name_length,
     product_description_length,
-    product_photos_qty,
+    product_photos_quantity,
     product_weight_g,
     product_length_cm,
     product_height_cm,
@@ -123,7 +123,7 @@ SELECT
 FROM bronze.order_items;
 
 -- 6. Payments
-INSERT INTO silver.order_payments (
+INSERT INTO silver.payments (
     order_id,
     payment_sequential,
     payment_type,
@@ -138,6 +138,6 @@ SELECT
     NULLIF(TRIM(payment_installments), '')::INTEGER,
     NULLIF(TRIM(payment_value), '')::NUMERIC(12,2),
     batch_id
-FROM bronze.order_payments;
+FROM bronze.payments;
 
 COMMIT;

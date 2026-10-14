@@ -56,3 +56,7 @@ SELECT * FROM bronze.payments;
 
 SELECT DISTINCT payment_type
 FROM bronze.payments;
+
+SELECT * FROM silver.orders;
+
+SELECT * FROM silver.payments;
