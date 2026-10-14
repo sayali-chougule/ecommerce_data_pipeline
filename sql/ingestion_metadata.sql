@@ -1,6 +1,3 @@
-
--- Stage 3: Ingestion metadata and audit tracking
-
 CREATE SCHEMA IF NOT EXISTS etl;
 
 CREATE TABLE IF NOT EXISTS etl.ingestion_batches (

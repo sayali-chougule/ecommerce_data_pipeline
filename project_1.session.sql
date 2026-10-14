@@ -26,4 +26,7 @@ SELECT * FROM bronze.orders
 WHERE order_approved_at IS NULL;
 
 SELECT * FROM bronze.orders
-WHERE order_purchase_timestamp < order_approved_at;
+WHERE order_purchase_timestamp > order_approved_at;
+
+SELECT * FROM bronze.orders
+WHERE order_purchase_timestamp > order_delivered_customer_date;
