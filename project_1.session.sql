@@ -60,3 +60,10 @@ FROM bronze.payments;
 SELECT * FROM silver.orders;
 
 SELECT * FROM silver.payments;
+
+SELECT
+    review_score,
+    COUNT(*) AS records
+FROM bronze.reviews
+GROUP BY review_score
+ORDER BY review_score;

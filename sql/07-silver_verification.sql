@@ -1,4 +1,14 @@
-SELECT 'products' AS dataset,
+SELECT 'customers' AS dataset,
+       (SELECT COUNT(*) FROM bronze.customers) AS bronze_count,
+       (SELECT COUNT(*) FROM silver.customers) AS silver_count
+
+UNION ALL
+SELECT 'orders',
+       (SELECT COUNT(*) FROM bronze.orders) AS bronze_count,
+       (SELECT COUNT(*) FROM silver.orders) AS silver_count
+
+UNION ALL
+SELECT 'products',
        (SELECT COUNT(*) FROM bronze.products) AS bronze_count,
        (SELECT COUNT(*) FROM silver.products) AS silver_count
 
@@ -15,7 +25,25 @@ SELECT 'order_items',
 UNION ALL
 SELECT 'payments',
        (SELECT COUNT(*) FROM bronze.payments),
-       (SELECT COUNT(*) FROM silver.payments);
+       (SELECT COUNT(*) FROM silver.payments)
+
+UNION ALL
+SELECT
+    'reviews',
+    (SELECT COUNT(*) FROM bronze.reviews) AS bronze_rows,
+    (SELECT COUNT(*) FROM silver.reviews) AS silver_rows;
+
+UNION ALL
+SELECT
+    'geolocation',
+    (SELECT COUNT(*) FROM bronze.geolocation),
+    (SELECT COUNT(*) FROM silver.geolocation)
+
+UNION ALL
+SELECT
+    'product_category_translation',
+    (SELECT COUNT(*) FROM bronze.product_category_translation),
+    (SELECT COUNT(*) FROM silver.product_category_translation);
 
 -- Verify monetary values
 SELECT

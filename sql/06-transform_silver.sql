@@ -9,12 +9,17 @@ BEGIN;
 
 -- All related tables are refreshed together.
 TRUNCATE TABLE
+    silver.reviews,
+    silver.geolocation,
+    silver.product_category_translation,
     silver.payments,
     silver.order_items,
     silver.sellers,
     silver.products,
     silver.orders,
-    silver.customers;
+    silver.customers
+RESTART IDENTITY;   -- new review and geolocation tables have auto-generated surrogate keys.
+                    -- resets their identity sequences during a full refresh.
 
 -- 1. Customers
 INSERT INTO silver.customers (
@@ -139,5 +144,59 @@ SELECT
     NULLIF(TRIM(payment_value), '')::NUMERIC(12,2),
     batch_id
 FROM bronze.payments;
+
+-- 7. Order Reviews
+INSERT INTO silver.reviews (
+    review_id,
+    order_id,
+    review_score,
+    review_comment_title,
+    review_comment_message,
+    review_creation_date,
+    review_answer_timestamp,
+    source_batch_id
+)
+SELECT
+    NULLIF(TRIM(review_id), ''),
+    NULLIF(TRIM(order_id), ''),
+    NULLIF(TRIM(review_score), '')::INTEGER,
+    NULLIF(TRIM(review_comment_title), ''),
+    NULLIF(TRIM(review_comment_message), ''),
+    NULLIF(TRIM(review_creation_date), '')::TIMESTAMP,
+    NULLIF(TRIM(review_answer_timestamp), '')::TIMESTAMP,
+    batch_id
+FROM bronze.reviews;
+
+
+-- 8. Geolocation
+INSERT INTO silver.geolocation (
+    geolocation_zip_code_prefix,
+    geolocation_lat,
+    geolocation_lng,
+    geolocation_city,
+    geolocation_state,
+    source_batch_id
+)
+SELECT
+    NULLIF(TRIM(geolocation_zip_code_prefix), ''),
+    NULLIF(TRIM(geolocation_lat), '')::DOUBLE PRECISION,
+    NULLIF(TRIM(geolocation_lng), '')::DOUBLE PRECISION,
+    LOWER(NULLIF(TRIM(geolocation_city), '')),
+    UPPER(NULLIF(TRIM(geolocation_state), '')),
+    batch_id
+FROM bronze.geolocation;
+
+
+-- 9. Product Category Translation
+INSERT INTO silver.product_category_translation (
+    product_category_name,
+    product_category_name_english,
+    source_batch_id
+)
+SELECT
+    LOWER(NULLIF(TRIM(product_category_name), '')),
+    LOWER(NULLIF(TRIM(product_category_name_english), '')),
+    batch_id
+FROM bronze.product_category_translation;
 
 COMMIT;
