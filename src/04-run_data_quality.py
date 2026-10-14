@@ -2,6 +2,7 @@ import logging
 import os
 import uuid
 from pathlib import Path
+import argparse
 
 import psycopg
 from dotenv import load_dotenv
@@ -38,6 +39,7 @@ DB_CONFIG = {
 CHECKS = [
     {
         "name": "missing_customer_ids",
+        "phase":"pre",
         "dataset": "bronze.customers",
         "sql": """
             SELECT COUNT(*)
@@ -47,6 +49,7 @@ CHECKS = [
     },
     {
         "name": "duplicate_order_ids",
+        "phase":"pre",
         "dataset": "bronze.orders",
         "sql": """
             SELECT COALESCE(SUM(duplicate_count - 1), 0)
@@ -60,6 +63,7 @@ CHECKS = [
     },
     {
         "name": "invalid_item_prices",
+        "phase":"pre",
         "dataset": "bronze.order_items",
         "sql": """
             SELECT COUNT(*)
@@ -87,6 +91,7 @@ CHECKS = [
     },
     {
         "name": "invalid_review_scores",
+        "phase":"pre",
         "dataset": "bronze.reviews",
         "sql": """
             SELECT COUNT(*)
@@ -104,6 +109,7 @@ CHECKS = [
     },
     {
         "name": "orphan_order_items",
+        "phase":"pre",
         "dataset": "bronze.order_items",
         "sql": """
             SELECT COUNT(*)
@@ -117,6 +123,7 @@ CHECKS = [
     },
     {
         "name": "bronze_silver_count_mismatches",
+        "phase":"post",
         "dataset": "all_silver_tables",
         "sql": """
             WITH counts AS (
@@ -189,6 +196,26 @@ def record_rejections(cur, run_id, check):
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description="Run Olist data quality checks"
+    )
+
+    parser.add_argument(
+        "--phase",
+        choices=["pre", "post", "all"],
+        default="all",
+        help="Which validation phase to execute",
+    )
+
+    args = parser.parse_args()
+
+    selected_checks = [
+        check
+        for check in CHECKS
+        if args.phase == "all"
+        or check["phase"] == args.phase
+    ]
+
     run_id = uuid.uuid4()
     failed_checks = 0
 
@@ -212,7 +239,7 @@ def main():
             with conn.transaction():
                 with conn.cursor() as cur:
 
-                    for check in CHECKS:
+                    for check in selected_checks:
                         cur.execute(check["sql"])
                         failed_count = cur.fetchone()[0]
 

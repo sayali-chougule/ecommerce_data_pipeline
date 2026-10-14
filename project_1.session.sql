@@ -73,3 +73,14 @@ SELECT
     COUNT(*) AS total_runs
 FROM etl.data_quality_runs
 GROUP BY status;
+
+SELECT
+    q.run_id,
+    q.status,
+    COUNT(r.result_id) AS checks_executed
+FROM etl.data_quality_runs q
+LEFT JOIN etl.data_quality_results r
+    ON q.run_id = r.run_id
+GROUP BY q.run_id, q.status, q.started_at
+ORDER BY q.started_at DESC
+LIMIT 2;
