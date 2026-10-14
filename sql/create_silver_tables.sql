@@ -96,3 +96,27 @@ CREATE TABLE IF NOT EXISTS silver.order_items(
     CONSTRAINT chk_freight_value
         CHECK (freight_value >= 0)
 );
+
+-- 6. Payments
+
+CREATE TABLE IF NOT EXISTS silver.payments(
+    order_id TEXT,
+    payment_sequential INT,
+    payment_type TEXT,
+    payment_installments INT,
+    payment_value NUMERIC(12,2),
+    source_batch_id UUID,
+    transformed_at TIMESTAMPTZ DEFAULT NOW(),
+
+    PRIMARY KEY (order_id, payment_sequential),
+
+    CONSTRAINT payment_order_fk      
+        FOREIGN KEY (order_id)
+        REFERENCES silver.orders(order_id),
+
+    CONSTRAINT chk_payment_installments
+        CHECK (payment_installments >= 0),
+
+    CONSTRAINT chk_payment_value
+        CHECK (payment_value >= 0) 
+);
