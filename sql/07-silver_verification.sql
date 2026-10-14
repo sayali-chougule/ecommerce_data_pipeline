@@ -39,3 +39,9 @@ SELECT
 FROM silver.payments
 GROUP BY payment_type
 ORDER BY payment_records DESC;
+
+-- Nine Silver tables.
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'silver'
+ORDER BY table_name;

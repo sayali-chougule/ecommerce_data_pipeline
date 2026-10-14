@@ -118,3 +118,54 @@ CREATE TABLE IF NOT EXISTS silver.payments(
     CONSTRAINT chk_payment_value
         CHECK (payment_value >= 0) 
 );
+
+-- Reviews
+CREATE TABLE IF NOT EXISTS silver.reviews (
+    review_key BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    review_id TEXT,
+    order_id TEXT NOT NULL,
+    review_score INTEGER,
+    review_comment_title TEXT,
+    review_comment_message TEXT,
+    review_creation_date TIMESTAMP,
+    review_answer_timestamp TIMESTAMP,
+    source_batch_id UUID,
+    transformed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+    CONSTRAINT fk_reviews_order
+        FOREIGN KEY (order_id)
+        REFERENCES silver.orders(order_id),
+
+    CONSTRAINT chk_review_score
+        CHECK (review_score BETWEEN 1 AND 5)
+);
+
+-- Geolocation
+CREATE TABLE IF NOT EXISTS silver.geolocation (
+    geolocation_key BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    geolocation_zip_code_prefix TEXT,
+    geolocation_lat DOUBLE PRECISION,
+    geolocation_lng DOUBLE PRECISION,
+    geolocation_city TEXT,
+    geolocation_state TEXT,
+    source_batch_id UUID,
+    transformed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+    CONSTRAINT chk_latitude
+        CHECK (
+            geolocation_lat BETWEEN -90 AND 90
+        ),
+
+    CONSTRAINT chk_longitude
+        CHECK (
+            geolocation_lng BETWEEN -180 AND 180
+        )
+);
+
+-- 9. Product Category Translation
+CREATE TABLE IF NOT EXISTS silver.product_category_translation (
+    product_category_name TEXT PRIMARY KEY,
+    product_category_name_english TEXT,
+    source_batch_id UUID,
+    transformed_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
