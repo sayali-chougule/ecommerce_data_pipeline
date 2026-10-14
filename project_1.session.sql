@@ -30,3 +30,19 @@ WHERE order_purchase_timestamp > order_approved_at;
 
 SELECT * FROM bronze.orders
 WHERE order_purchase_timestamp > order_delivered_customer_date;
+
+SELECT * FROM silver.orders;
+
+SELECT DISTINCT order_status
+FROM silver.orders;
+
+SELECT * FROM bronze.products;
+
+SELECT DISTINCT product_category_name
+FROM bronze.products
+
+SELECT column_name, data_type
+FROM information_schema.columns
+WHERE table_schema = 'bronze'
+  AND table_name = 'products'
+ORDER BY ordinal_position; 
