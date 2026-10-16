@@ -1,5 +1,6 @@
 cat > .gitignore <<'EOF'
 .venv/
+venv/
 .project1/*
 __pycache__/
 .pytest_cache/
@@ -10,4 +11,5 @@ data/processed/*
 data/extracted/*
 .DS_Store
 .env
+.env.*
 EOF
