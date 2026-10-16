@@ -12,4 +12,5 @@ data/extracted/*
 .DS_Store
 .env
 .env.*
+.vscode
 EOF

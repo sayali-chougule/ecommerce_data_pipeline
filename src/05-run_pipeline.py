@@ -10,6 +10,11 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+from pipeline_utils_07 import (
+    validate_db_config,
+    validate_required_files,
+)
+
 
 # --------------------------------------------------
 # Project configuration
@@ -93,6 +98,22 @@ def main():
     logger.info("=" * 55)
 
     pipeline_start = time.monotonic()
+
+
+    # Validate configuration before modifying any data.
+    validate_db_config(os.environ)
+
+    # Confirm the required pipeline files exist.
+    validate_required_files([
+        SRC_DIR / "03-load_bronze.py",
+        SRC_DIR / "04-run_data_quality.py",
+        SRC_DIR / "06-run_gold_quality.py",
+        SQL_DIR / "06-transform_silver.sql",
+        SQL_DIR / "10-transform_gold.sql",
+        SQL_DIR / "12-create_gold_views.sql",
+        SQL_DIR / "14-gold_quality_checks.sql",
+    ])
+
 
     psql_path = shutil.which("psql")
 
