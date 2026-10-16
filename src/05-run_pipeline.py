@@ -154,6 +154,46 @@ def main():
             ],
         )
 
+
+        # STEP 5: Gold transformation
+        run_step(
+            "Gold transformation",
+            [
+                psql_path,
+                "-X",
+                "-v",
+                "ON_ERROR_STOP=1",
+                "-d",
+                database_name,
+                "-f",
+                str(SQL_DIR / "10-transform_gold.sql"),
+            ],
+        )
+
+        # STEP 6: Create or update analytical views
+        run_step(
+            "Gold analytical views",
+            [
+                psql_path,
+                "-X",
+                "-v",
+                "ON_ERROR_STOP=1",
+                "-d",
+                database_name,
+                "-f",
+                str(SQL_DIR / "12-create_gold_views.sql"),
+            ],
+        )
+
+        # STEP 7: Gold data quality
+        run_step(
+            "Gold validation",
+            [
+                sys.executable,
+                str(SRC_DIR / "06-run_gold_quality.py"),
+            ],
+        )
+
     except Exception:
         duration = time.monotonic() - pipeline_start
 
