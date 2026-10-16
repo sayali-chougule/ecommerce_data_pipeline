@@ -84,3 +84,9 @@ LEFT JOIN etl.data_quality_results r
 GROUP BY q.run_id, q.status, q.started_at
 ORDER BY q.started_at DESC
 LIMIT 2;
+
+
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'gold'
+ORDER BY table_name;
