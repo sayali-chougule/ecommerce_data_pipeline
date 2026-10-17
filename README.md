@@ -122,10 +122,16 @@ Never commit `.env`.
 
 ### 4. Place the source data
 
-Extract the nine Olist CSV files into:
+Place the nine Olist CSV files into:
 
 ```text
 data/raw/
+```
+
+Extract the nine Olist CSV files into:
+
+```text
+data/extracted/
 ```
 
 ### 5. Initialize the database
@@ -138,7 +144,7 @@ initialization commands.
 ### 6. Execute the pipeline
 
 ```bash
-python src/run_pipeline.py
+python src/05-run_pipeline.py
 ```
 
 ### 7. Run automated tests
