@@ -1,6 +1,6 @@
 # Operational Runbook — Olist E-commerce ELT Pipeline
 
-## Purpose
+## Purpose 
 
 This runbook covers local setup, execution, validation, troubleshooting, and recovery for the PostgreSQL ELT pipeline.
 
